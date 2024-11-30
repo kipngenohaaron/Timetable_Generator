@@ -1,7 +1,3 @@
-Here’s an updated version of your **README.md** file with improved structure and additional details:
-
----
-
 # Timetable Generator  
 
 ## Author  

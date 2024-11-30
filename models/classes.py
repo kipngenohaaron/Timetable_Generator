@@ -1,23 +1,9 @@
-# models/classes.py
-import json
+class Class:
+    def __init__(self, name, code, duration=None, venue=None):
+        self.name = name
+        self.code = code
+        self.duration = duration  # Duration of the class
+        self.venue = venue        # Venue of the class
 
-DATA_FILE = "data/classes.json"
-
-def get_classes():
-    """Retrieve all classes"""
-    try:
-        with open(DATA_FILE, "r") as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return []
-
-def add_class(name, size):
-    """Add a class"""
-    classes = get_classes()
-    classes.append({"name": name, "size": size})
-    with open(DATA_FILE, "w") as file:
-        json.dump(classes, file)
-
-def get_class_by_name(name):
-    """Retrieve class by name"""
-    return next((cls for cls in get_classes() if cls["name"] == name), None)
+    def __repr__(self):
+        return f"Class(name={self.name}, code={self.code}, duration={self.duration}, venue={self.venue})"

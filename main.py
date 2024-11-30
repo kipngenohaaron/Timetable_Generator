@@ -1,6 +1,6 @@
 # main.py
 from models.classes import add_class
-from models.trainors import add_trainer
+from models.trainers import add_trainer
 from models.timetable import generate_timetable
 from utils.printer import print_timetable
 

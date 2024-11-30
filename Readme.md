@@ -122,11 +122,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Special thanks to my mentors and peers for their feedback and support throughout the project.
 ```
-
----
-
-### **Notes**:
-- Adjust any sections according to your project's needs, especially if you decide to add more features or change how the program operates.
-- **Installation Instructions** are based on the assumption that you'll be using a virtual environment and Python 3. If your setup differs, modify the installation commands accordingly.
-
-Let me know if you need any modifications!

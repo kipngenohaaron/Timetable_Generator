@@ -1,63 +1,54 @@
-# tests/test_timetable.py
-
-# Import necessary modules from the project
+import pytest
 from models.classes import Class
 from models.trainers import Trainer
 from models.subjects import Subject
-from timetable import generate_timetable
-from utils.conflict_checker import is_conflict
+from models.timetable import Timetable
 
-# Sample data for tests
-def test_add_class():
-    """Test for adding a class."""
-    class1 = Class(name="Math 101", schedule="Mon 9-11")
-    assert class1.name == "Math 101", f"Expected 'Math 101', but got {class1.name}"
-    assert class1.schedule == "Mon 9-11", f"Expected 'Mon 9-11', but got {class1.schedule}"
+def test_trainer_timetable():
+    timetable = Timetable()
 
-def test_add_trainer():
-    """Test for adding a trainer."""
-    trainer = Trainer(name="John Doe", subject="Math")
-    assert trainer.name == "John Doe", f"Expected 'John Doe', but got {trainer.name}"
-    assert trainer.subject == "Math", f"Expected 'Math', but got {trainer.subject}"
+    # Create trainers
+    trainer1 = Trainer("Mr. Smith", "T001")
+    trainer2 = Trainer("Ms. Johnson", "T002")
 
-def test_add_subject():
-    """Test for adding a subject."""
-    subject = Subject(name="Mathematics", code="MATH101")
-    assert subject.name == "Mathematics", f"Expected 'Mathematics', but got {subject.name}"
-    assert subject.code == "MATH101", f"Expected 'MATH101', but got {subject.code}"
+    # Create subjects
+    subject1 = Subject("Mathematics", "MATH101")
+    subject2 = Subject("Physics", "PHYS101")
 
-def test_generate_timetable():
-    """Test for generating timetable."""
-    # Assuming that generate_timetable returns a list of dictionaries
-    timetable = generate_timetable()
+    # Create classes with duration and venue
+    class1 = Class("Math 101", "M101", "1 hour", "Room 101")
+    class2 = Class("Physics 101", "P101", "2 hours", "Room 102")
+
+    # Add classes to timetable
+    timetable.add_class(class1)
+    timetable.add_class(class2)
+
+    # Assign trainers to classes
+    timetable.assign_trainer(class1, trainer1, subject1, "9:00 AM")
+    timetable.assign_trainer(class2, trainer2, subject2, "11:00 AM")
+
+    # Print timetables for trainers
+    timetable.print_trainer_timetable(trainer1)
+    timetable.print_trainer_timetable(trainer2)
+
+    # Print timetable for classes
+    timetable.print_timetable()
+
+def test_conflict_check():
+    timetable = Timetable()
+
+    # Create trainers and classes
+    trainer1 = Trainer("Mr. Smith", "T001")
+    trainer2 = Trainer("Ms. Johnson", "T002")
+    subject1 = Subject("Math", "MATH101")
+    class1 = Class("Math 101", "M101", "1 hour", "Room 101")
     
-    # Example checks
-    assert len(timetable) > 0, "Timetable is empty, expected some entries"
-    
-    # Check the first entry
-    assert "class" in timetable[0], "Class field missing in timetable"
-    assert "trainer" in timetable[0], "Trainer field missing in timetable"
-    assert "time" in timetable[0], "Time field missing in timetable"
-    assert "venue" in timetable[0], "Venue field missing in timetable"
-    
-    # Check that the class "Math 101" is in the timetable
-    class_names = [slot["class"] for slot in timetable]
-    assert "Math 101" in class_names, "Math 101 not found in timetable"
+    # Add class to timetable
+    timetable.add_class(class1)
 
-def test_conflict_checker_no_conflict():
-    """Test conflict checking: No conflict should return False"""
-    # Create two classes with no overlapping schedules
-    class1 = Class(name="Math 101", schedule="Mon 9-11")
-    class2 = Class(name="Science 101", schedule="Mon 11-1")
-    
-    conflict = is_conflict(class1, class2)
-    assert conflict is False, "Expected no conflict, but got a conflict"
+    # Assign trainer1 to class1
+    timetable.assign_trainer(class1, trainer1, subject1, "9:00 AM")
 
-def test_conflict_checker_with_conflict():
-    """Test conflict checking: Should return True for overlapping schedules"""
-    # Create two classes with overlapping schedules
-    class1 = Class(name="Math 101", schedule="Mon 9-11")
-    class2 = Class(name="History 101", schedule="Mon 10-12")
-    
-    conflict = is_conflict(class1, class2)
-    assert conflict is True, "Expected a conflict, but got no conflict"
+    # Attempt to assign trainer1 to the same class at the same time (should raise error)
+    with pytest.raises(ValueError):
+        timetable.assign_trainer(class1, trainer1, subject1, "9:00 AM")

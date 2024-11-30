@@ -1,4 +1,4 @@
-# Timetable Generator  
+# Timetable Generator  System
 
 ## Author  
 **Kipngenoh Aaron Rotich**  

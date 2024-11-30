@@ -1,35 +1,34 @@
-# main.py
-from models.classes import add_class
-from models.trainers import add_trainer
-from models.timetable import generate_timetable
-from utils.printer import print_timetable
+from models.classes import Class
+from models.trainers import Trainer
+from models.subjects import Subject
+from models.timetable import Timetable
 
-def main():
-    """Main program to manage timetable generation"""
-    print("Welcome to the Timetable Generator!")
-    while True:
-        print("\nMenu:")
-        print("1. Add Class")
-        print("2. Add Trainer")
-        print("3. Generate Timetable")
-        print("4. Exit")
-        choice = input("Enter your choice: ")
+# Initialize timetable object
+timetable = Timetable()
 
-        if choice == "1":
-            name = input("Enter class name: ")
-            size = int(input("Enter class size: "))
-            add_class(name, size)
-        elif choice == "2":
-            name = input("Enter trainer name: ")
-            availability = input("Enter availability (e.g., Mon-Fri 9AM-5PM): ")
-            add_trainer(name, availability)
-        elif choice == "3":
-            timetable = generate_timetable()
-            print_timetable(timetable)
-        elif choice == "4":
-            break
-        else:
-            print("Invalid choice. Try again.")
+# Create trainers
+trainer1 = Trainer("Mr. Smith", "T001")
+trainer2 = Trainer("Ms. Johnson", "T002")
 
-if __name__ == "__main__":
-    main()
+# Create subjects
+subject1 = Subject("Mathematics", "MATH101")
+subject2 = Subject("Physics", "PHYS101")
+
+# Create classes with duration and venue
+class1 = Class("Math 101", "M101", "1 hour", "Room 101")
+class2 = Class("Physics 101", "P101", "2 hours", "Room 102")
+
+# Add classes to timetable
+timetable.add_class(class1)
+timetable.add_class(class2)
+
+# Assign trainers to classes
+timetable.assign_trainer(class1, trainer1, subject1, "9:00 AM")
+timetable.assign_trainer(class2, trainer2, subject2, "11:00 AM")
+
+# Print timetables for trainers
+timetable.print_trainer_timetable(trainer1)
+timetable.print_trainer_timetable(trainer2)
+
+# Print timetable for classes
+timetable.print_timetable()

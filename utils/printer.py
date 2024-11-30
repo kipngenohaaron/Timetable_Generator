@@ -1,22 +1,14 @@
-# utils/printer.py
+def print_timetable_for_class(timetable):
+    print("Institution Timetable:")
+    for class_obj in timetable.classes:
+        print(f"\nClass: {class_obj.name}, Code: {class_obj.code}, Duration: {class_obj.duration}, Venue: {class_obj.venue}")
+        if class_obj in timetable.trainings:
+            for trainer, subject in timetable.trainings[class_obj]:
+                print(f"  - Trainer: {trainer.name}, Subject: {subject.name}")
 
-def print_timetable(timetable):
-    """Print the generated timetable"""
-    
-    # Print for each class
-    print("\n--- Timetable for Classes ---")
-    classes = set([slot["class"] for slot in timetable])  # Unique classes
-    for class_name in classes:
-        print(f"\nClass: {class_name}")
-        class_slots = [slot for slot in timetable if slot["class"] == class_name]
-        for slot in class_slots:
-            print(f"  Trainer: {slot['trainer']} | Time: {slot['time']} | Venue: {slot['venue']}")
-    
-    # Print for each trainer
-    print("\n--- Timetable for Trainers ---")
-    trainers = set([slot["trainer"] for slot in timetable])  # Unique trainers
-    for trainer_name in trainers:
-        print(f"\nTrainer: {trainer_name}")
-        trainer_slots = [slot for slot in timetable if slot["trainer"] == trainer_name]
-        for slot in trainer_slots:
-            print(f"  Class: {slot['class']} | Time: {slot['time']} | Venue: {slot['venue']}")
+def print_timetable_for_trainer(timetable, trainer):
+    print(f"\nTimetable for Trainer: {trainer.name}")
+    for class_obj, assignments in timetable.trainings.items():
+        for assigned_trainer, subject in assignments:
+            if assigned_trainer == trainer:
+                print(f"  - Class: {class_obj.name}, Subject: {subject.name}, Venue: {class_obj.venue}, Duration: {class_obj.duration}")

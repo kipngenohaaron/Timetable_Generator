@@ -1,4 +1,4 @@
-# import pytest
+import pytest
 from models.classes import Class
 from models.trainers import Trainer
 from models.subjects import Subject

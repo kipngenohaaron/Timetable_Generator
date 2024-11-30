@@ -1,21 +1,34 @@
-from models.timetable import Timetable  
-from utils.printer import print_timetable  
-from utils.conflict_checker import check_conflicts  
+from models.classes import Class
+from models.trainers import Trainer
+from models.subjects import Subject
+from models.timetable import Timetable
 
-def main():  
-    # Create a Timetable instance  
-    timetable = Timetable()  
-    
-    # Load data (this can be done from data JSON files)  
-    timetable.load_data()  
+# Initialize timetable object
+timetable = Timetable()
 
-    # Check for conflicts before generating  
-    if check_conflicts(timetable):  
-        print("Conflicts detected! Please resolve them.")  
-    else:  
-        # Generate the timetable  
-        timetable.generate()  
-        print_timetable(timetable)  
+# Create trainers
+trainer1 = Trainer("Mr. Smith", "T001")
+trainer2 = Trainer("Ms. Johnson", "T002")
 
-if __name__ == "__main__":  
-    main()
+# Create subjects
+subject1 = Subject("Mathematics", "MATH101")
+subject2 = Subject("Physics", "PHYS101")
+
+# Create classes with duration and venue
+class1 = Class("Math 101", "M101", "1 hour", "Room 101")
+class2 = Class("Physics 101", "P101", "2 hours", "Room 102")
+
+# Add classes to timetable
+timetable.add_class(class1)
+timetable.add_class(class2)
+
+# Assign trainers to classes
+timetable.assign_trainer(class1, trainer1, subject1, "9:00 AM")
+timetable.assign_trainer(class2, trainer2, subject2, "11:00 AM")
+
+# Print timetables for trainers
+timetable.print_trainer_timetable(trainer1)
+timetable.print_trainer_timetable(trainer2)
+
+# Print timetable for classes
+timetable.print_timetable()
